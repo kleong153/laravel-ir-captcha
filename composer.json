@@ -1,0 +1,56 @@
+{
+    "name": "klangch/laravel-ir-captcha",
+    "type": "library",
+    "description": "Image rotation captcha library for Laravel 11/12",
+    "keywords": [
+        "laravel",
+        "captcha",
+        "laravel captcha",
+        "image captcha"
+    ],
+    "homepage": "https://github.com/kleong153/laravel-ir-captcha",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Klang.C",
+            "email": "kleong153@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "ext-json": "*",
+        "ext-gd": "*",
+        "illuminate/config": "^11|^12",
+        "illuminate/contracts": "^11|^12",
+        "illuminate/filesystem": "^11|^12",
+        "illuminate/support": "^11|^12",
+        "illuminate/session": "^11|^12",
+        "intervention/image-laravel": "^1.5"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.0",
+        "phpunit/phpunit": "^11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Klangch\\LaravelIRCaptcha\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Klangch\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Klangch\\LaravelIRCaptcha\\LaravelIRCaptchaServiceProvider"
+            ],
+            "dont-discover": []
+        }
+    },
+    "minimum-stability": "stable"
+}
