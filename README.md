@@ -1,4 +1,4 @@
-# Laravel IR Captcha (Alpha)
+# Laravel IR Captcha (Alpha Stage)
 
 Laravel IR Captcha (Image Rotation Captcha) is a customizable image rotation CAPTCHA package for Laravel 11 and 12.
 
@@ -8,14 +8,21 @@ Laravel IR Captcha (Image Rotation Captcha) is a customizable image rotation CAP
 - No third-party services required. Everything are handled locally.
 
 ## Preview
-Coming soon
+![LaravelIRCaptcha Screenshot 1](https://github.com/user-attachments/assets/7baac265-c504-4d42-8efe-02a6fb7889cf)
+![LaravelIRCaptcha Screenshot 2](https://github.com/user-attachments/assets/6c4efeb1-9903-4305-9de3-fb24f42353b3)
+
+
+
+https://github.com/user-attachments/assets/71f9b85c-6a83-4b4c-b63a-a92418e36209
+
+
 
 ## Installation
 Make sure the PHP GD extension is installed and enabled.
 
 Install with composer using following command:
 ```bash
-composer require klangch/ir-captcha
+composer require klangch/laravel-ir-captcha
 ```
 
 ## Configuration
