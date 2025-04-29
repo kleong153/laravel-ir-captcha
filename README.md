@@ -1,4 +1,4 @@
-# Laravel IR Captcha (Alpha Stage)
+# Laravel IR Captcha (Beta Stage)
 
 Laravel IR Captcha (Image Rotation Captcha) is a customizable image rotation CAPTCHA package for Laravel 11 and 12.
 
@@ -61,9 +61,15 @@ ir_captcha()->iframeUrl(true);
 $url = ir_captcha()->iframeUrl() . '?theme=dark';
 ```
 
-or set dark theme in Laravel Blade + JS
+or set dark theme dynamically in Laravel Blade + JS
 ```js
-const url = "{{ ir_captcha()->iframeUrl() }}?theme=dark";
+let captchaUrl = "{{ ir_captcha()->iframeUrl() }}";
+
+if (themeMode === "dark") {
+    captchaUrl += "?theme=dark";
+}
+
+document.getElementById("captchaIframe").src = captchaUrl;
 ```
 
 ### Validate captcha token
@@ -95,4 +101,4 @@ $ php artisan ir-captcha:clear-expired
 ```
 
 ## Code Example
-Coming soon
+https://github.com/kleong153/laravel-ir-captcha-example
