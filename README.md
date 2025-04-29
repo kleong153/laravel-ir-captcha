@@ -18,7 +18,7 @@ https://github.com/user-attachments/assets/71f9b85c-6a83-4b4c-b63a-a92418e36209
 
 
 ## Installation
-Make sure the PHP GD extension is installed and enabled.
+Make sure the PHP ```gd``` extension is installed and enabled.
 
 Install with composer using following command:
 ```bash
@@ -30,6 +30,9 @@ Publish configuration, view, localization files by using following command:
 ```bash
 $ php artisan vendor:publish --provider="Klangch\LaravelIRCaptcha\LaravelIRCaptchaServiceProvider"
 ```
+- ```config/ir-captcha.php```
+- ```lang/vendor/ir-captcha/en/messages.php```
+- ```resoures/views/vendor/ir-captcha/irCaptcha.blade.php```
 
 ## Usage
 Show captcha in iframe
@@ -80,7 +83,6 @@ if (ir_captcha()->validateCaptchaToken($token) === true) {
 ```
 
 or by using Laravel validation rule:
-
 ```php
 use Illuminate\Support\Facades\Validator;
 use Klangch\LaravelIRCaptcha\Rules\IRCaptcha;
@@ -95,10 +97,11 @@ $validator->validate();
 
 ### Clear expired captcha files
 Clear expired captcha files by using following command:
-
 ```bash
 $ php artisan ir-captcha:clear-expired
 ```
+
+Hint: You can set this command in cron job to regularly clear expired files.
 
 ## Code Example
 https://github.com/kleong153/laravel-ir-captcha-example

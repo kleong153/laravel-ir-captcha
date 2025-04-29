@@ -9,8 +9,11 @@ return [
     // Set 0 for no throttle.
     'throttle_per_minute' => 6,
 
-    // Expiration time in seconds.
-    'expire' => 60,
+    // Captcha challenge expiration time in seconds.
+    'captcha_challenge_expire' => 60,
+
+    // Captcha token expiration time in seconds.
+    'captcha_token_expire' => 300,
 
     // Degree tolerance for validation.
     'validate_degree_tolerance' => 5,
@@ -33,7 +36,7 @@ return [
     'bg_color' => [255, 255, 255, 1],
 
     // Number of noise dots.
-    'noise_dots' => 200,
+    'noise_dots' => 100,
 
     // Number of noise lines.
     'noise_lines' => 6,

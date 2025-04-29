@@ -56,7 +56,7 @@ class LaravelIRCaptcha
 
         $results = $this->createCaptchaFiles($img, $captchaUid, $config);
 
-        Cache::store($config['cache_store'])->put("imageCaptchaChallenge:$captchaUid", $results['rotation'], now()->addSeconds($config['expire']));
+        Cache::store($config['cache_store'])->put("imageCaptchaChallenge:$captchaUid", $results['rotation'], now()->addSeconds($config['captcha_challenge_expire']));
 
         return [
             'captcha_uid' => $captchaUid,
@@ -87,7 +87,7 @@ class LaravelIRCaptcha
             if ($success === true) {
                 $captchaToken = Str::remove('-', 'cpt' . Str::uuid() . mt_rand(1111, 9999));
 
-                Cache::store($config['cache_store'])->put("imageCaptchaToken:$captchaToken", true, 300); // 5 mins expiry.
+                Cache::store($config['cache_store'])->put("imageCaptchaToken:$captchaToken", true, $config['captcha_token_expire']);
             }
         }
 
