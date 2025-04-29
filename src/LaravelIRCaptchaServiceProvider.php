@@ -28,8 +28,13 @@ class LaravelIRCaptchaServiceProvider extends ServiceProvider
 
         RateLimiter::for('ir-captcha', function (Request $request) {
             $config = config('ir-captcha');
+            $throttle = $config['throttle_per_minute'];
 
-            return Limit::perMinute($config['throttle_per_minute'])->by($request->ip());
+            if ($throttle <= 0) {
+                return Limit::none()->by($request->ip());
+            }
+
+            return Limit::perMinute($throttle)->by($request->ip());
         });
 
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'ir-captcha');

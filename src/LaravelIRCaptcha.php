@@ -56,7 +56,7 @@ class LaravelIRCaptcha
 
         $results = $this->createCaptchaFiles($img, $captchaUid, $config);
 
-        Cache::store('file')->put("imageCaptchaChallenge:$captchaUid", $results['rotation'], now()->addSeconds($config['expire']));
+        Cache::store($config['cache_store'])->put("imageCaptchaChallenge:$captchaUid", $results['rotation'], now()->addSeconds($config['expire']));
 
         return [
             'captcha_uid' => $captchaUid,
@@ -67,11 +67,12 @@ class LaravelIRCaptcha
 
     public function verifyCaptchaChallenge(string $captchaUid, int $inputDegree): array
     {
+        $config = config('ir-captcha');
         $success = false;
         $expired = false;
         $captchaToken = '';
 
-        $realDegree = Cache::store('file')->pull("imageCaptchaChallenge:$captchaUid");
+        $realDegree = Cache::store($config['cache_store'])->pull("imageCaptchaChallenge:$captchaUid");
 
         if (!$realDegree) {
             $expired = true;
@@ -86,7 +87,7 @@ class LaravelIRCaptcha
             if ($success === true) {
                 $captchaToken = Str::remove('-', 'cpt' . Str::uuid() . mt_rand(1111, 9999));
 
-                Cache::store('file')->put("imageCaptchaToken:$captchaToken", true, 300); // 5 mins expiry.
+                Cache::store($config['cache_store'])->put("imageCaptchaToken:$captchaToken", true, 300); // 5 mins expiry.
             }
         }
 
@@ -99,15 +100,17 @@ class LaravelIRCaptcha
 
     public function validateCaptchaToken(string $captchaToken): bool
     {
-        return Cache::store('file')->pull("imageCaptchaToken:$captchaToken") === true;
+        $config = config('ir-captcha');
+
+        return Cache::store($config['cache_store'])->pull("imageCaptchaToken:$captchaToken") === true;
     }
 
     public function clearExpiredFiles(): void
     {
         $config = config('ir-captcha');
 
-        $tempStorage = Storage::disk($config['temp_disk']);
-        $tempFiles = $tempStorage->files($config['temp_dir']);
+        $tempStorage = Storage::disk($config['temp_file_disk']);
+        $tempFiles = $tempStorage->files($config['temp_file_dir']);
 
         foreach ($tempFiles as $file) {
             if ($tempStorage->lastModified($file) < now()->subSeconds(10)->timestamp) {
@@ -116,8 +119,8 @@ class LaravelIRCaptcha
         }
 
         $expireSeconds = $config['expire'];
-        $captchaStorage = Storage::disk($config['cache_disk']);
-        $captchaFiles = $captchaStorage->files($config['cache_dir']);
+        $captchaStorage = Storage::disk($config['public_file_disk']);
+        $captchaFiles = $captchaStorage->files($config['public_file_dir']);
 
         foreach ($captchaFiles as $file) {
             if ($captchaStorage->lastModified($file) < now()->subSeconds($expireSeconds)->timestamp) {
@@ -244,9 +247,9 @@ class LaravelIRCaptcha
 
     private function createCaptchaFiles(ImageInterface &$img, string $captchaUid, array $config): array
     {
-        $tempStorage = Storage::disk($config['temp_disk']);
+        $tempStorage = Storage::disk($config['temp_file_disk']);
         $filenamePrefix = $captchaUid;
-        $filepathPrefix = $config['temp_dir'] . DIRECTORY_SEPARATOR . $filenamePrefix;
+        $filepathPrefix = $config['temp_file_dir'] . DIRECTORY_SEPARATOR . $filenamePrefix;
 
         // Save generated image to temp storage.
         $sourceFilepath = $filepathPrefix . '_source.png';
@@ -341,9 +344,9 @@ class LaravelIRCaptcha
         imagedestroy($mask);
 
         // Move generated files to cache folder, then delete temp files.
-        $cacheStorage = Storage::disk($config['cache_disk']);
-        $cacheCroppedFilepath = $config['cache_dir'] . DIRECTORY_SEPARATOR . $filenamePrefix . '_cropped.png';
-        $cachePunchedFilepath = $config['cache_dir'] . DIRECTORY_SEPARATOR . $filenamePrefix . '_punched.png';
+        $cacheStorage = Storage::disk($config['public_file_disk']);
+        $cacheCroppedFilepath = $config['public_file_dir'] . DIRECTORY_SEPARATOR . $filenamePrefix . '_cropped.png';
+        $cachePunchedFilepath = $config['public_file_dir'] . DIRECTORY_SEPARATOR . $filenamePrefix . '_punched.png';
 
         $cacheStorage->put($cacheCroppedFilepath, $tempStorage->get($tempCroppedFilepath));
         $cacheStorage->put($cachePunchedFilepath, $tempStorage->get($tempPunchedFilepath));

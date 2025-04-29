@@ -6,6 +6,7 @@ return [
     'height' => 160,
 
     // Number of allowed requests per minute per IP.
+    // Set 0 for no throttle.
     'throttle_per_minute' => 6,
 
     // Expiration time in seconds.
@@ -15,12 +16,18 @@ return [
     'validate_degree_tolerance' => 5,
 
     // Disk and directory for storing temporary files while generating captcha images.
-    'temp_disk' => 'local',
-    'temp_dir' => 'image_captcha_temp',
+    // Refer to your project's config/filesystems.php for avaiable disks.
+    'temp_file_disk' => 'local',
+    'temp_file_dir' => 'image_captcha_temp',
 
     // Disk and directory for storing generated captcha images.
-    'cache_disk' => 'public',
-    'cache_dir' => 'captcha_cache',
+    // Refer to your project's config/filesystems.php for avaiable disks.
+    'public_file_disk' => 'public',
+    'public_file_dir' => 'captcha_cache',
+
+    // Cache store for storing cache values.
+    // Refer to your project's config/cache.php for avaiable stores.
+    'cache_store' => 'file',
 
     // Background color (RGBA format).
     'bg_color' => [255, 255, 255, 1],
