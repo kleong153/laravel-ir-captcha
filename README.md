@@ -13,7 +13,7 @@ Laravel IR Captcha (Image Rotation Captcha) is a customizable image rotation CAP
 
 
 
-https://github.com/user-attachments/assets/71f9b85c-6a83-4b4c-b63a-a92418e36209
+https://github.com/user-attachments/assets/32460513-4fe3-4bfa-bcf7-79c5e9b7f5e1
 
 
 
