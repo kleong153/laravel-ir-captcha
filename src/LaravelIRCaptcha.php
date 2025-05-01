@@ -118,7 +118,7 @@ class LaravelIRCaptcha
             }
         }
 
-        $expireSeconds = $config['expire'];
+        $expireSeconds = $config['captcha_challenge_expire'];
         $captchaStorage = Storage::disk($config['public_file_disk']);
         $captchaFiles = $captchaStorage->files($config['public_file_dir']);
 
@@ -343,21 +343,21 @@ class LaravelIRCaptcha
         imagedestroy($circle);
         imagedestroy($mask);
 
-        // Move generated files to cache folder, then delete temp files.
-        $cacheStorage = Storage::disk($config['public_file_disk']);
-        $cacheCroppedFilepath = $config['public_file_dir'] . DIRECTORY_SEPARATOR . $filenamePrefix . '_cropped.png';
-        $cachePunchedFilepath = $config['public_file_dir'] . DIRECTORY_SEPARATOR . $filenamePrefix . '_punched.png';
+        // Move generated files to public folder, then delete temp files.
+        $publicStorage = Storage::disk($config['public_file_disk']);
+        $publicCroppedFilepath = $config['public_file_dir'] . DIRECTORY_SEPARATOR . $filenamePrefix . '_cropped.png';
+        $publicPunchedFilepath = $config['public_file_dir'] . DIRECTORY_SEPARATOR . $filenamePrefix . '_punched.png';
 
-        $cacheStorage->put($cacheCroppedFilepath, $tempStorage->get($tempCroppedFilepath));
-        $cacheStorage->put($cachePunchedFilepath, $tempStorage->get($tempPunchedFilepath));
+        $publicStorage->put($publicCroppedFilepath, $tempStorage->get($tempCroppedFilepath));
+        $publicStorage->put($publicPunchedFilepath, $tempStorage->get($tempPunchedFilepath));
         $tempStorage->delete($sourceFilepath);
         $tempStorage->delete($tempCroppedFilepath);
         $tempStorage->delete($tempPunchedFilepath);
 
         return [
             'rotation' => $rotation,
-            'cropped_url' => Str::replace('\\', '/', $cacheStorage->url($cacheCroppedFilepath)),
-            'punched_url' => Str::replace('\\', '/', $cacheStorage->url($cachePunchedFilepath)),
+            'cropped_url' => Str::replace('\\', '/', $publicStorage->url($publicCroppedFilepath)),
+            'punched_url' => Str::replace('\\', '/', $publicStorage->url($publicPunchedFilepath)),
         ];
     }
 }
