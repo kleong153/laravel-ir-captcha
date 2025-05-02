@@ -21,12 +21,12 @@ return [
     // Disk and directory for storing temporary files while generating captcha images.
     // Refer to your project's config/filesystems.php for avaiable disks.
     'temp_file_disk' => 'local',
-    'temp_file_dir' => 'image_captcha_temp',
+    'temp_file_dir' => 'ir_captcha_temp',
 
     // Disk and directory for storing generated captcha images.
     // Refer to your project's config/filesystems.php for avaiable disks.
     'public_file_disk' => 'public',
-    'public_file_dir' => 'captcha_cache',
+    'public_file_dir' => 'ir_captcha',
 
     // Cache store for storing cache values.
     // Refer to your project's config/cache.php for avaiable stores.
