@@ -236,6 +236,7 @@
 
         let captchaUid = "";
         let retryInterval = null;
+        let parentOrigin = "";
 
         function initPage() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -244,6 +245,8 @@
             if (theme === "dark") {
                 document.documentElement.setAttribute("data-theme", "dark");
             }
+
+            parentOrigin = urlParams.get("parent_origin") ?? "";
 
             fetchCaptcha();
         }
@@ -388,7 +391,7 @@
                                 type: "irCaptcha",
                                 status: "success",
                                 captchaToken: result.captcha_token,
-                            });
+                            }, parentOrigin);
                         }, 1000);
                     } else if (result.expired === true) {
                         showErrorStatusOverlay("{{ Lang::get('ir-captcha::messages.result_captcha_expired') }}");

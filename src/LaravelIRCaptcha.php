@@ -15,10 +15,14 @@ use Intervention\Image\Laravel\Facades\Image;
 
 class LaravelIRCaptcha
 {
-    public function iframeUrl(bool $darkTheme = false): string
+    public function iframeUrl(string $parentOrigin = "", bool $darkTheme = false): string
     {
         $url = url('ir-captcha');
         $params = [];
+
+        if ($parentOrigin) {
+            $params['parent_origin'] = $parentOrigin;
+        }
 
         if ($darkTheme) {
             $params['theme'] = 'dark';

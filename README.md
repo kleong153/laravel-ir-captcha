@@ -34,6 +34,19 @@ $ php artisan vendor:publish --provider="Klangch\LaravelIRCaptcha\LaravelIRCaptc
 - ```lang/vendor/ir-captcha/en/messages.php```
 - ```resoures/views/vendor/ir-captcha/irCaptcha.blade.php```
 
+## Note For Frontend Framework On Different Domains (e.g. Next.js)
+When using this package with frontend running on different domain (such as a Next.js app embedding captcha verification page via an iframe), CSRF protection may block requests due to cross-origin restrictions. To allow verification requests from the iframe to bypass CSRF validation, you can explicitly exclude the verification endpoint:
+```php
+// bootstrap/app.php
+->withMiddleware(function (Middleware $middleware) {
+    // ...
+
+    $middleware->validateCsrfTokens(except: [
+        'ir-captcha-verify',
+    ]);
+});
+```
+
 ## Usage
 Show captcha in iframe
 ```html
@@ -54,22 +67,30 @@ window.addEventListener("message", (event) => {
 
 ### URL for iframe
 ```php
-// Light theme
+// Get captcha URL with helper
 ir_captcha()->iframeUrl();
 
-// Dark theme
-ir_captcha()->iframeUrl(true);
+// Get captcha URL with parent origin and dark theme
+ir_captcha()->iframeUrl('https://[your_parent_origin].com', true);
 
-// Or append dark theme param manually
-$url = ir_captcha()->iframeUrl() . '?theme=dark';
+// Or append parent origin and dark theme param manually
+$url = ir_captcha()->iframeUrl() . '?parent_origin=https://[your_parent_origin].com&theme=dark';
 ```
 
 or set dark theme dynamically in Laravel Blade + JS
 ```js
+// Get captcha URL with helper
 let captchaUrl = "{{ ir_captcha()->iframeUrl() }}";
 
+// Or without helper
+let captchaUrl = "https://[your_captcha_domain].com/ir-captcha";
+
+// Then append parent origin
+captchaUrl += "?parent_origin=" + window.location.origin;
+
+// Append theme
 if (themeMode === "dark") {
-    captchaUrl += "?theme=dark";
+    captchaUrl += "&theme=dark";
 }
 
 document.getElementById("captchaIframe").src = captchaUrl;
@@ -101,7 +122,7 @@ Clear expired captcha files by using following command:
 $ php artisan ir-captcha:clear-expired
 ```
 
-Hint: You can set this command in cron job to regularly clear expired files.
+You can set this command in cron job to regularly clear expired files.
 
 ## Code Example
 https://github.com/kleong153/laravel-ir-captcha-example
