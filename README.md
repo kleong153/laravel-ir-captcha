@@ -37,7 +37,7 @@ $ php artisan vendor:publish --provider="Klangch\LaravelIRCaptcha\LaravelIRCaptc
 ## Usage
 Show captcha in iframe
 ```html
-<iframe src="{{ ir_captcha()->iframeUrl() }}" height="276" width="280"></iframe>
+<iframe src="{{ ir_captcha()->iframeUrl() }}" height="290" width="300"></iframe>
 ```
 
 Listen for iframe's post message
@@ -111,7 +111,7 @@ $ php artisan ir-captcha:clear-expired
 
 You can set this command in cron job to regularly clear expired files.
 
-## ⚠️⚠️ Note For Frontend Framework On Different Domains ⚠️⚠️
+## ⚠️ Note For Frontend Framework On Different Domains ⚠️
 When using this package with frontend hosted on different domain (such as a Next.js app embedding captcha verification page via an iframe), there are a few important things to keep in mind:
 
 ### ⚠️ CSRF Exclusion
@@ -146,7 +146,7 @@ public function handle(Request $request, Closure $next): Response
 }
 ```
 
-For a complete working example, see the [Code Example](#code-example) repository.
+For a complete working example, see the [Code Example](https://github.com/kleong153/laravel-ir-captcha-example) repository.
 
 ## Code Example
 https://github.com/kleong153/laravel-ir-captcha-example
