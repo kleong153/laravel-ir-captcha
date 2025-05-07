@@ -111,9 +111,11 @@ $ php artisan ir-captcha:clear-expired
 
 You can set this command in cron job to regularly clear expired files.
 
-## Note For Frontend Framework On Different Domains
-### CSRF Exclusion
-When using this package with frontend running on different domain (such as a Next.js app embedding captcha verification page via an iframe), CSRF protection may block requests due to cross-origin restrictions. To allow verification requests from the iframe to bypass CSRF validation, you can explicitly exclude the verification endpoint:
+## ⚠️⚠️ Note For Frontend Framework On Different Domains ⚠️⚠️
+When using this package with frontend hosted on different domain (such as a Next.js app embedding captcha verification page via an iframe), there are a few important things to keep in mind:
+
+### ⚠️ CSRF Exclusion
+CSRF protection may block requests due to cross-origin restrictions. To allow verification requests from the iframe to bypass CSRF validation, you can explicitly exclude the verification endpoint:
 ```php
 // bootstrap/app.php
 ->withMiddleware(function (Middleware $middleware) {
@@ -124,6 +126,27 @@ When using this package with frontend running on different domain (such as a Nex
     ]);
 });
 ```
+
+### ⚠️ Set Captcha Locale
+You can set the captcha's language by passing a locale code as a query string parameter, such as ```_lang```. Then, use middleware to set the application's locale accordingly.
+
+For example, in your HTML:
+```html
+<iframe src="https://[your_captcha_domain].com/ir-captcha?parent_origin=https://[your_parent_origin].com&_lang=cn"></iframe>
+```
+
+In your middleware, retrieve the ```_lang``` value and set the application locale:
+
+```php
+public function handle(Request $request, Closure $next): Response
+{
+    $locale = $request->input('_lang', 'en');
+    App::setLocale($locale);
+    return $next($request);
+}
+```
+
+For a complete working example, see the [Code Example](#code-example) repository.
 
 ## Code Example
 https://github.com/kleong153/laravel-ir-captcha-example
