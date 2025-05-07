@@ -34,19 +34,6 @@ $ php artisan vendor:publish --provider="Klangch\LaravelIRCaptcha\LaravelIRCaptc
 - ```lang/vendor/ir-captcha/en/messages.php```
 - ```resoures/views/vendor/ir-captcha/irCaptcha.blade.php```
 
-## Note For Frontend Framework On Different Domains
-When using this package with frontend running on different domain (such as a Next.js app embedding captcha verification page via an iframe), CSRF protection may block requests due to cross-origin restrictions. To allow verification requests from the iframe to bypass CSRF validation, you can explicitly exclude the verification endpoint:
-```php
-// bootstrap/app.php
-->withMiddleware(function (Middleware $middleware) {
-    // ...
-
-    $middleware->validateCsrfTokens(except: [
-        'ir-captcha-verify',
-    ]);
-});
-```
-
 ## Usage
 Show captcha in iframe
 ```html
@@ -123,6 +110,20 @@ $ php artisan ir-captcha:clear-expired
 ```
 
 You can set this command in cron job to regularly clear expired files.
+
+## Note For Frontend Framework On Different Domains
+### CSRF Exclusion
+When using this package with frontend running on different domain (such as a Next.js app embedding captcha verification page via an iframe), CSRF protection may block requests due to cross-origin restrictions. To allow verification requests from the iframe to bypass CSRF validation, you can explicitly exclude the verification endpoint:
+```php
+// bootstrap/app.php
+->withMiddleware(function (Middleware $middleware) {
+    // ...
+
+    $middleware->validateCsrfTokens(except: [
+        'ir-captcha-verify',
+    ]);
+});
+```
 
 ## Code Example
 https://github.com/kleong153/laravel-ir-captcha-example
