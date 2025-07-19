@@ -1,4 +1,4 @@
-# Laravel IR Captcha (Beta Stage)
+# Laravel IR Captcha
 
 Laravel IR Captcha (Image Rotation Captcha) is a customizable image rotation CAPTCHA package for Laravel 11 and 12.
 
